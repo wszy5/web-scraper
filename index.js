@@ -1,8 +1,8 @@
-const PORT = 47
+const PORT = 3000
 
 const axios = require("axios")
 const cheerio = require("cheerio")
-const { response } = require("express")
+const { response, request } = require("express")
 const express = require("express")
 
 const app = express()
@@ -13,12 +13,7 @@ axios(url).then(response => {
     const html = response.data
     const $ = cheerio.load(html)
     const articles = []
-    // $(".news news--over", html).each((x) => {
-    //     const url = $(this).find("a")
-    //     articles.push(url)
-    // })
 
-    // console.log(($("div").find("article")).length)
     $("div").find("article").each(function(){
         const title = $(this).find("img").attr("alt")
         const url = $(this).find("a").attr("href")
@@ -29,6 +24,10 @@ axios(url).then(response => {
         articles.push(article)
     })
     console.log(articles)
+})
+
+app.get("/",(request, response) => {
+    response.send("hello")
 })
 
 app.listen(PORT, ()=>{
